@@ -1,0 +1,14 @@
+{
+    "Bwd": {
+        "a@add": { "sum3.c": [9, 11, 12, 13, 15, 27, 28, 33, 40, 41] },
+        "b@add": { "sum3.c": [9, 12, 13, 15, 27, 28, 33, 40, 41] },
+        "i@main": { "sum3.c": [9, 12, 13, 15, 28, 33, 40, 41] },
+        "n@main": { "sum3.c": [9] },
+        "sum@main": { "sum3.c": [9, 11, 12, 13, 15, 27, 28, 33, 40, 41] },
+        "tmp@inc": { "sum3.c": [9, 12, 13, 15, 28, 33, 40, 41] },
+        "x@A": { "sum3.c": [9, 11, 12, 13, 15, 27, 28, 33, 40, 41] },
+        "y@A": { "sum3.c": [9, 12, 13, 15, 28, 33, 40, 41] },
+        "z@inc": { "sum3.c": [9, 12, 13, 15, 28, 33, 40, 41] }
+    },
+    "Info": "Its trace Info: #Insts_bwdSym = 68\n Backward Static SliceTable:\n #Insts_sliced = 207.0 (Average: 23)\n Its some statistic Info.:\n #Defined_Functions = 4\n CFG(#Nodes,#Edges) = [\"main: (23,23)\",\"A: (8,7)\",\"add: (10,9)\",\"inc: (7,6)\"]\n #BasicBlocks = 7\n #Insts_All = 44\n #Insts_alloc = 10\n #Insts_br = 1\n #Vars_sliced = 9\n Its runtime = 4.8774e-2\n"
+}
