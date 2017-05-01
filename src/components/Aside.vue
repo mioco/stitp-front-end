@@ -13,7 +13,10 @@
       </stitp-menu>
     </div>
     <input type="file" hidden ref="fileUpload" @change="fileReader">
-    <stitp-search :className="'stitp-sidebar-search'" :codeSlices="codeSlices" :getLine="getLine"></stitp-search>
+    <stitp-search 
+    :className="'stitp-sidebar-search'" 
+    :codeSlices="codeSlices" 
+    :getLine="getLine"></stitp-search>
   </aside>
 </template>
 
@@ -60,14 +63,13 @@ export default {
         let reader = new FileReader()
 
         reader.onload = () => {
-          this.fileName = file.name
+          Bus.storage.save('codeFileName', file.name)
           Bus.$emit('code-source', reader.result)
+          Bus.$emit('btn-render', [])
         }
         reader.readAsText(file)
       }
     }
-  },
-  created () {
   }
 }
 

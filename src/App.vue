@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <stitp-sidebar :codeSlices="codeSlices" :getLine="getLine"></stitp-sidebar>
+    <stitp-sidebar :getLine="getLine"></stitp-sidebar>
     <stitp-codebox :code="code"></stitp-codebox>
     <stitp-graphbox v-if="graphBoxShow"></stitp-graphbox>
   </div>
@@ -47,7 +47,6 @@ export default {
   data () {
     return {
       code: Bus.storage.fetch('codeSource'),
-      codeSlices: Bus.storage.fetch('btns'),
       graphBoxShow: false
     }
   },
