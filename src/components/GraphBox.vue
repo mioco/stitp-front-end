@@ -36,9 +36,14 @@ export default {
     display: flex;
     z-index: 4;
   }
+  @keyframes show {
+    from { transform: scale(0); }
+    to   { transform: scale(1); }
+  }
   .stitp-graphBox > .stitp-graphBox-graph {
     margin: auto;
     padding: 1rem;
     background-color: #fff;
+    animation: .3s show;
   }
 </style>

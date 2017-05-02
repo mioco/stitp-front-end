@@ -1,7 +1,7 @@
 <template>
   <div class="menu-btn" @click="menuItem.options ? showOptions = !showOptions : menuItem.method(menuItem.api)">
     <span>{{ menuItem.title }}</span>
-    <small v-if="menuItem.options">▲</small>
+    <small v-if="menuItem.options">{{ showOptions ? '▲' : '▼' }}</small>
     <div v-if="showOptions">
       <div class="menu-btn" v-for="item in menuItem.options" @click.stop="item.method">{{ item.title }}</div>
     </div>
@@ -30,5 +30,8 @@ export default {
   .menu-btn {
     margin-top: 1rem;
     cursor: default;
+  }
+  .menu-btn:hover {
+    color: rgba(44,62,80,0.5);
   }
 </style>

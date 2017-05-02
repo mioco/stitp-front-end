@@ -78,6 +78,6 @@ export default {
     border-left: 1px solid #222;
   }
   li:hover {
-    color: rgba(0,0,0,.5);
+    color: rgba(44,62,80,0.5);
   }
 </style>
