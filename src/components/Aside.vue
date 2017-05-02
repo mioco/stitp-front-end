@@ -76,7 +76,13 @@ export default {
 </script>
 
 <style scoped>
+  h2 {
+    margin: .5rem 0;
+  }
   .stitp-sidebar {
-    background-color: #abc; 
+    background-color: #abc;
+  }
+  .stitp-sidebar > * {
+    margin: 2rem;
   }
 </style>

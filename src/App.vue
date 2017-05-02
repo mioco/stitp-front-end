@@ -75,8 +75,10 @@ export default {
       }
     })
     Bus.$on('fetch-graph', () => {
-      if (this.graphBoxShow) this.graphBoxShow = false
-      else {
+      if (this.graphBoxShow) {
+        this.graphBoxShow = false
+        return false
+      } else {
         let graph = getData('/api/public/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'))
         graph.then(graph => {
           Bus.storage.save('graph', graph)

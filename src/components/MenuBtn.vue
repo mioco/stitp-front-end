@@ -3,7 +3,7 @@
     <span>{{ menuItem.title }}</span>
     <small v-if="menuItem.options">▲</small>
     <div v-if="showOptions">
-      <div v-for="item in menuItem.options" @click.stop="item.method">{{ item.title }}</div>
+      <div class="menu-btn" v-for="item in menuItem.options" @click.stop="item.method">{{ item.title }}</div>
     </div>
   </div>
 </template>
@@ -27,5 +27,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .menu-btn {
+    margin-top: 1rem;
+    cursor: default;
+  }
 </style>

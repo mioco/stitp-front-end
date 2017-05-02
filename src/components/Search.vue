@@ -39,15 +39,45 @@ export default {
   methods: {
     getLine (lines, e) {
       let classList = e.target.classList
-      Bus.$emit('get-line', lines[this.fileName], classList.contains('active'))
-      classList.toggle('active')
+      let isActive = classList.contains('active')
+      let activeEle = document.querySelector('li.active')
+      if (activeEle) activeEle.classList.remove('active')
+      Bus.$emit('get-line', lines[this.fileName], isActive)
+      classList.toggle('active', !isActive)
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
   .default-btn {
-    background-color: #fff;
+  }
+  input {
+    width: 100%;
+    display: inline-block;
+    padding: .7rem 2rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    border: none;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+    background: none;
+    outline: none;
+    color: #222;
+  }
+  ul {
+    padding: 0;
+  }
+  li {
+    list-style: none;
+    margin-bottom: .5rem;
+    cursor: default;
+  }
+  li.active {
+    padding-left: 1rem;
+    border-left: 1px solid #222;
+  }
+  li:hover {
+    color: rgba(0,0,0,.5);
   }
 </style>
