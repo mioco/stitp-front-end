@@ -18,7 +18,6 @@ export default {
     return {
       filter: '',
       btns: Bus.storage.fetch('btns'),
-      originBtns: Bus.storage.fetch('btns'),
       fileName: Bus.storage.fetch('codeFileName')
     }
   },
@@ -33,7 +32,8 @@ export default {
   },
   watch: {
     filter: function (filterStr) {
-      Bus.$emit('btn-render', this.originBtns, filterStr)
+      let originBtns = Bus.storage.fetch('btns')
+      Bus.$emit('btn-render', originBtns, filterStr)
     }
   },
   methods: {

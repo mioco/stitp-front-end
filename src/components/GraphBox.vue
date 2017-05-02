@@ -14,9 +14,8 @@ export default {
       graph: Bus.storage.fetch('graph')
     }
   },
-  create () {
+  created () {
     Bus.$on('graph-render', graph => {
-      console.log(graph)
       this.graph = graph
     })
   },
@@ -39,5 +38,7 @@ export default {
   }
   .stitp-graphBox > .stitp-graphBox-graph {
     margin: auto;
+    padding: 1rem;
+    background-color: #fff;
   }
 </style>

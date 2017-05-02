@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <stitp-sidebar :getLine="getLine"></stitp-sidebar>
+    <stitp-sidebar></stitp-sidebar>
     <stitp-codebox :code="code"></stitp-codebox>
     <stitp-graphbox v-if="graphBoxShow"></stitp-graphbox>
   </div>
@@ -48,15 +48,6 @@ export default {
     return {
       code: Bus.storage.fetch('codeSource'),
       graphBoxShow: false
-    }
-  },
-  methods: {
-    sendCode (api) {
-      let url = '/api/phpapi/' + api
-      console.log(url)
-    },
-    getLine (lines) {
-      console.log(lines)
     }
   },
   created () {
