@@ -25,6 +25,7 @@ export default {
     }
   },
   created () {
+    console.log('is run test')
     Bus.$on('code-source', (code) => {
       this.code = code
     })
