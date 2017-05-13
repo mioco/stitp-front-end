@@ -29,33 +29,30 @@ export default {
     Bus.$on('code-source', (code) => {
       this.code = code
     })
-    Bus.$on('get-btn', () => {
-      let url = '/api/index.php/index/index/codeSource'
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          code: this.code
+
+    Bus.$on('fetch-btns', (data) => {
+      if (typeof data === 'object') {
+        let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data))
+        btns.then(btns => {
+          let codeSlices = JSON.parse(btns)[data.direction]
+          Bus.storage.save('btns', codeSlices)
+          Bus.$emit('btn-render', codeSlices)
         })
-      })
-      .then((res) => {
-        if (res.status >= 200 && res.status < 300) return res
-        else {
-          alert('something happened')
-        }
-      })
-      .then((res) => {
-        return res.json()
-      })
-      .then((btns) => {
-        this.btnList = JSON.parse(btns)
-        Bus.$emit('btn-render')
-      })
-      .catch((err) => {
-        alert(err)
-      })
+      }
+    })
+    Bus.$on('fetch-graph', () => {
+      if (this.graphBoxShow) {
+        this.graphBoxShow = false
+        return false
+      } else {
+        let graph = getData('/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'))
+        graph.then(graph => {
+          Bus.storage.save('graph', graph)
+          Bus.$emit('graph-render', graph)
+        })
+        this.graphBoxShow = true
+      }
+
     })
   }
 }

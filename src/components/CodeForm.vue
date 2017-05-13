@@ -3,6 +3,7 @@
     <codemirror ref="codemirror"
       :code="code" 
       :options="editorOption"
+      @change="codeChange"
     ></codemirror>
   </div>
 </template>
@@ -44,6 +45,11 @@ export default {
         })
       }
     })
+  },
+  methods: {
+    codeChange: function (val) {
+      Bus.$emit('code-source', val)
+    }
   }
 }
 </script>
