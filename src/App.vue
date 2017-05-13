@@ -57,7 +57,7 @@ export default {
     })
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
-        let btns = getData('/api/public/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data))
+        let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data))
         btns.then(btns => {
           let codeSlices = JSON.parse(btns)[data.direction]
           Bus.storage.save('btns', codeSlices)
@@ -70,7 +70,7 @@ export default {
         this.graphBoxShow = false
         return false
       } else {
-        let graph = getData('/api/public/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'))
+        let graph = getData('/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'))
         graph.then(graph => {
           Bus.storage.save('graph', graph)
           Bus.$emit('graph-render', graph)
