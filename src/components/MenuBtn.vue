@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-btn" @click="menuItem.options ? showOptions = !showOptions : menuItem.method(menuItem.api)">
+  <div :class="{ 'menu-btn': !menuItem.options }" @click="menuItem.options ? showOptions = !showOptions : menuItem.method(menuItem.api)">
     <span>{{ menuItem.title }}</span>
     <small v-if="menuItem.options">{{ showOptions ? '▲' : '▼' }}</small>
     <div v-if="showOptions">
@@ -27,7 +27,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .menu-btn {
+  div {
     margin-top: 1rem;
     cursor: default;
   }

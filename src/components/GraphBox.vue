@@ -42,6 +42,8 @@ export default {
   }
   .stitp-graphBox > .stitp-graphBox-graph {
     margin: auto;
+    overflow: auto;
+    max-width: 90vw;
     padding: 1rem;
     background-color: #fff;
     animation: .3s show;

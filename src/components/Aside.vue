@@ -40,8 +40,7 @@ export default {
           title: '获取切片',
           options: [
               {method: this.fetchWrap('fetch-btns', {'direction': 'Fwd'}), title: '前向切片'},
-              {method: this.fetchWrap('fetch-btns', {'direction': 'Bwd'}), title: '后向切片'},
-              {method: this.fetchWrap('fetch-btns', {'direction': 'Both'}), title: '双向切片'}
+              {method: this.fetchWrap('fetch-btns', {'direction': 'Bwd'}), title: '后向切片'}
           ]
         },
         {method: this.fetchWrap('fetch-graph'), title: '获取Graph'}

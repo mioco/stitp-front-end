@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <stitp-sidebar></stitp-sidebar>
-    <stitp-codebox :code="code"></stitp-codebox>
-    <stitp-graphbox v-if="graphBoxShow"></stitp-graphbox>
+    <sidebar></sidebar>
+    <codebox :code="code"></codebox>
+    <graphbox v-if="graphBoxShow"></graphbox>
+    <modal 
+    v-if="modalShow" 
+    :detail="modalDetail" 
+    :modalToggle="modalToggle"
+    ></modal>
   </div>
 </template>
 
@@ -10,10 +15,11 @@
 import CodeBox from './components/CodeBox'
 import GraphBox from './components/GraphBox'
 import Aside from './components/Aside'
+import Modal from './components/Modal'
 import Bus from './bus'
 
-const STORAGE_KEY = 'stitp-1.0.0'
 // 保存在本地，界面刷新时加载
+const STORAGE_KEY = 'stitp-1.0.0'
 Bus.storage = {
   fetch: function (type) {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY + '-' + type) || (type === 'btns' ? '[]' : '""'))
@@ -23,7 +29,7 @@ Bus.storage = {
   }
 }
 
-const getData = async (api, data) => {
+const getData = async (api, data, _this) => {
   try {
     let receive = await fetch(api, {
       method: 'POST',
@@ -31,23 +37,39 @@ const getData = async (api, data) => {
       body: JSON.stringify(data)
     })
     let parseReceive = await receive.json()
+    // 如果服务器返回错误，添加提示模态框
+    if (isError(parseReceive)) {
+      _this.modalDetail.title = 'Error'
+      _this.modalDetail.content = parseReceive['error']
+      _this.modalShow = true
+      return false
+    }
     return parseReceive
   } catch (err) {
     console.log(err)
   }
 }
 
+const isError = (data) => {
+  let error = data['error']
+  if (error && typeof error === 'string') return true
+  else return false
+}
+
 export default {
   name: 'app',
   components: {
-    'stitp-sidebar': Aside,
-    'stitp-codebox': CodeBox,
-    'stitp-graphbox': GraphBox
+    'sidebar': Aside,
+    'codebox': CodeBox,
+    'graphbox': GraphBox,
+    'modal': Modal
   },
   data () {
     return {
       code: Bus.storage.fetch('codeSource'),
-      graphBoxShow: false
+      graphBoxShow: false,
+      modalShow: false,
+      modalDetail: {}
     }
   },
   created () {
@@ -57,7 +79,7 @@ export default {
     })
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
-        let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data))
+        let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
           let codeSlices = JSON.parse(btns)[data.direction]
           Bus.storage.save('btns', codeSlices)
@@ -70,7 +92,7 @@ export default {
         this.graphBoxShow = false
         return false
       } else {
-        let graph = getData('/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'))
+        let graph = getData('/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
         graph.then(graph => {
           Bus.storage.save('graph', graph)
           Bus.$emit('graph-render', graph)
@@ -78,6 +100,11 @@ export default {
         this.graphBoxShow = true
       }
     })
+  },
+  methods: {
+    modalToggle () {
+      this.modalShow = !this.modalShow
+    }
   }
 }
 </script>
