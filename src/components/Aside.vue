@@ -5,18 +5,18 @@
       <div><small>大学生创新创业训练计划项目</small> </div>
     </div>
     <div class="stitp-sidebar-menu">
-      <stitp-menu class="stitp-sidebar-menu-item" 
+      <sideMenu class="stitp-sidebar-menu-item" 
         v-for="(key, index) in sidebarMenu" 
         :menuItem="key"
         key="index"
         >{{ key.title }}
-      </stitp-menu>
+      </sideMenu>
     </div>
     <input type="file" hidden ref="fileUpload" @change="fileReader">
-    <stitp-search 
+    <search 
     :className="'stitp-sidebar-search'" 
     :codeSlices="codeSlices" 
-    :getLine="getLine"></stitp-search>
+    :getLine="getLine"></search>
   </aside>
 </template>
 
@@ -28,8 +28,8 @@ import Bus from '../bus.js'
 export default {
   name: 'aside',
   components: {
-    'stitp-search': Search,
-    'stitp-menu': MenuBtn
+    'search': Search,
+    'sideMenu': MenuBtn
   },
   props: ['getLine', 'codeSlices'],
   data () {

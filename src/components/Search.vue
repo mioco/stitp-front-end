@@ -38,11 +38,12 @@ export default {
   },
   methods: {
     getLine (lines, e) {
+      let fileName = Bus.storage.fetch('codeFileName')
       let classList = e.target.classList
       let isActive = classList.contains('active')
       let activeEle = document.querySelector('li.active')
       if (activeEle) activeEle.classList.remove('active')
-      Bus.$emit('get-line', lines[this.fileName], isActive)
+      Bus.$emit('get-line', lines[fileName], isActive)
       classList.toggle('active', !isActive)
     }
   }

@@ -25,6 +25,7 @@ Bus.storage = {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY + '-' + type) || (type === 'btns' ? '[]' : '""'))
   },
   save: function (type, option) {
+    if (option === undefined) return false
     return sessionStorage.setItem(STORAGE_KEY + '-' + type, JSON.stringify(option))
   }
 }
@@ -81,7 +82,7 @@ export default {
       if (typeof data === 'object') {
         let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
-          let codeSlices = JSON.parse(btns)[data.direction]
+          let codeSlices = JSON.parse(btns)
           Bus.storage.save('btns', codeSlices)
           Bus.$emit('btn-render', codeSlices)
         })
