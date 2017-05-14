@@ -1,35 +1,60 @@
 <template>
-  <div id='app'>
-    <Side :btn-list="btnList"></Side>
-    <CodeForm :code="code" :active-line="activeLine"></CodeForm>
+  <div id="app">
+    <stitp-sidebar></stitp-sidebar>
+    <stitp-codebox :code="code"></stitp-codebox>
+    <stitp-graphbox v-if="graphBoxShow"></stitp-graphbox>
   </div>
 </template>
 
 <script>
-import Side from './components/Side'
-import CodeForm from './components/CodeForm'
-import 'whatwg-fetch'
-import Bus from './Bus'
+import CodeBox from './components/CodeBox'
+import GraphBox from './components/GraphBox'
+import Aside from './components/Aside'
+import Bus from './bus'
+
+const STORAGE_KEY = 'stitp-1.0.0'
+// 保存在本地，界面刷新时加载
+Bus.storage = {
+  fetch: function (type) {
+    return JSON.parse(sessionStorage.getItem(STORAGE_KEY + '-' + type) || (type === 'btns' ? '[]' : '""'))
+  },
+  save: function (type, option) {
+    return sessionStorage.setItem(STORAGE_KEY + '-' + type, JSON.stringify(option))
+  }
+}
+
+const getData = async (api, data) => {
+  try {
+    let receive = await fetch(api, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    })
+    let parseReceive = await receive.json()
+    return parseReceive
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 export default {
   name: 'app',
   components: {
-    Side,
-    CodeForm
+    'stitp-sidebar': Aside,
+    'stitp-codebox': CodeBox,
+    'stitp-graphbox': GraphBox
   },
   data () {
     return {
-      code: '请输入代码...',
-      activeLine: [],
-      btnList: {}
+      code: Bus.storage.fetch('codeSource'),
+      graphBoxShow: false
     }
   },
   created () {
-    console.log('is run test')
     Bus.$on('code-source', (code) => {
       this.code = code
+      Bus.storage.save('codeSource', code)
     })
-
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
         let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data))
@@ -52,53 +77,20 @@ export default {
         })
         this.graphBoxShow = true
       }
-
     })
   }
 }
 </script>
 
 <style>
-html, body, #app {
-  height: 100%;
-  box-sizing: border-box;
+body {
+  margin: 0;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  min-width: 74rem;
-}
-#app>div {
-  float: left;
-}
-body {
-  margin: 0;
-  overflow: hidden;
-}
-h1, h2, h3, h4, h5 {
-  margin: 0;
-}
-.side-CodeForm, .CodeForm {
-  padding: 1em;
-}
-.side-btn {
-  padding: 1em;
-  background-color: #abc;
-  text-align: center;
-  border-radius: .2rem;
-  cursor: default;
-}
-.side-form-control {
-  width: 100%;
-  border-radius: .2rem .2rem 0 0;
-  padding: 1em;
-  box-sizing: border-box;
-  border: none;
-  color: #34495e;
-  outline: none;
-  font-size: 15px;
-  margin-bottom: 2em;
+  display: flex;
 }
 </style>

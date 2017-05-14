@@ -1,4 +1,4 @@
-# vue-cli
+# stitp-front-end
 
 > A Vue.js project
 
