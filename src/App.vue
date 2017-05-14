@@ -80,8 +80,10 @@ export default {
     })
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
-        let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
+        let btns = getData('/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
+          Bus.storage.save('codeFileName', btns['__hash__'])
+          delete btns['__hash__']
           Bus.storage.save('btns', btns)
           Bus.$emit('btn-render', btns)
         })
@@ -92,7 +94,7 @@ export default {
         this.graphBoxShow = false
         return false
       } else {
-        let graph = getData('/index.php/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
+        let graph = getData('/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
         graph.then(graph => {
           Bus.storage.save('graph', graph)
           Bus.$emit('graph-render', graph)

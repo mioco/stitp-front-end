@@ -62,7 +62,6 @@ export default {
         let reader = new FileReader()
 
         reader.onload = () => {
-          Bus.storage.save('codeFileName', file.name)
           Bus.$emit('code-source', reader.result)
           Bus.$emit('btn-render', [])
         }

@@ -68,6 +68,8 @@ export default {
   }
   ul {
     padding: 0;
+    max-height: 50vh;
+    overflow-y: auto;
   }
   li {
     list-style: none;
