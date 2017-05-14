@@ -82,9 +82,8 @@ export default {
       if (typeof data === 'object') {
         let btns = getData('/index.php/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
-          let codeSlices = JSON.parse(btns)
-          Bus.storage.save('btns', codeSlices)
-          Bus.$emit('btn-render', codeSlices)
+          Bus.storage.save('btns', btns)
+          Bus.$emit('btn-render', btns)
         })
       }
     })
