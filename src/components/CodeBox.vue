@@ -1,16 +1,18 @@
 <template>
-  <section class="stitp-codebox codemirror">
+  <div class="stitp-codebox codemirror">
     <codemirror ref="codemirror"
       :code="code" 
       :options="editorOption"
       @change="codeChange"
     ></codemirror>
-  </section>
+    <target></target>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import VCM from 'vue-codemirror'
+import Target from './Target'
 import Bus from '../bus'
 
 Vue.use(VCM)
@@ -18,6 +20,9 @@ Vue.use(VCM)
 export default {
   name: 'codeForm',
   props: ['code'],
+  components: {
+    'target': Target
+  },
   data () {
     return {
       editorOption: {
@@ -46,6 +51,12 @@ export default {
       }
     })
   },
+  mounted () {
+    let lineNumber = document.querySelectorAll('.CodeMirror-linenumber')
+    lineNumber.forEach(ele => {
+      ele.setAttribute('id', '_' + ele.innerText)
+    })
+  },
   methods: {
     codeChange: function (val) {
       Bus.$emit('code-source', val)
@@ -57,8 +68,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
 .codemirror {
-  width: calc(100vw - 20rem - 4rem);
-  height: 100vh;
+  width: 100%;
+  height: 90vh;
+  border-bottom: 1px solid #ddd;
 }
 .codemirror pre {
   font-size: 16px;

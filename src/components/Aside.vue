@@ -79,6 +79,8 @@ export default {
   }
   .stitp-sidebar {
     background-color: #abc;
+    min-width: 16rem;
+    height: 100vh;
   }
   .stitp-sidebar > * {
     margin: 2rem;

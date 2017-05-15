@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <sidebar></sidebar>
-    <codebox :code="code"></codebox>
+    <section>
+      <codebox :code="code"></codebox>
+      <target></target>
+    </section>
     <graphbox v-if="graphBoxShow"></graphbox>
     <modal 
     v-if="modalShow" 
@@ -16,6 +19,7 @@ import CodeBox from './components/CodeBox'
 import GraphBox from './components/GraphBox'
 import Aside from './components/Aside'
 import Modal from './components/Modal'
+import Target from './components/Target'
 import Bus from './bus'
 
 // 保存在本地，界面刷新时加载
@@ -63,7 +67,8 @@ export default {
     'sidebar': Aside,
     'codebox': CodeBox,
     'graphbox': GraphBox,
-    'modal': Modal
+    'modal': Modal,
+    'target': Target
   },
   data () {
     return {
@@ -80,7 +85,7 @@ export default {
     })
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
-        let btns = getData('/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
+        let btns = getData('/api/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
           Bus.storage.save('codeFileName', btns['__hash__'])
           delete btns['__hash__']
@@ -94,7 +99,7 @@ export default {
         this.graphBoxShow = false
         return false
       } else {
-        let graph = getData('/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
+        let graph = getData('/api/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
         graph.then(graph => {
           Bus.storage.save('graph', graph)
           Bus.$emit('graph-render', graph)
@@ -121,5 +126,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   display: flex;
+}
+section {
+  width: 100%;
 }
 </style>
