@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Bus from '../bus'
+import { Bus, SetActive } from '../bus'
 import Vue from 'vue'
 export default {
   props: ['className'],
@@ -39,14 +39,16 @@ export default {
   methods: {
     getLine (lines, e) {
       let fileName = Bus.storage.fetch('codeFileName')
-      let classList = e.target.classList
-      let isActive = classList.contains('active')
-      let activeEle = document.querySelector('li.active')
-
-      if (activeEle) activeEle.classList.remove('active')
-      Bus.$emit('get-line', lines[fileName], isActive)
-      Bus.$emit('target', e.target.innerText, lines[fileName])
-      classList.toggle('active', !isActive)
+      let active = new SetActive('li', e)
+      let editor = {
+        where: 'background',
+        name: 'active-line'
+      }
+      if (active.activeEle) active.activeEle.classList.remove('active')
+      Bus.$emit('get-line', lines[fileName], active.isActive, editor)
+      Bus.$emit('target', e.target.innerText, lines[fileName], active.isActive)
+      active.remove()
+      active.toggle()
     }
   }
 }

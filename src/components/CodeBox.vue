@@ -5,7 +5,6 @@
       :options="editorOption"
       @change="codeChange"
     ></codemirror>
-    <target></target>
   </div>
 </template>
 
@@ -13,9 +12,21 @@
 import Vue from 'vue'
 import VCM from 'vue-codemirror'
 import Target from './Target'
-import Bus from '../bus'
+import { Bus } from '../bus'
 
 Vue.use(VCM)
+
+function EditClass (where, name, editor) {
+  this.editor = editor
+  this.addClass = line => {
+    this.editor.addLineClass(line - 1, where, name)
+  }
+  this.removeClass = () => {
+    this.editor.eachLine(line => {
+      this.editor.removeLineClass(line, where, name)
+    })
+  }
+}
 
 export default {
   name: 'codeForm',
@@ -40,21 +51,20 @@ export default {
     editor () { return this.$refs.codemirror.editor }
   },
   created () {
-    Bus.$on('get-line', (lines, isActive) => {
-      this.editor.eachLine((line) => {
-        this.editor.removeLineClass(line, 'background', 'active-line')
-      })
+    Bus.$on('get-line', (lines, isActive, eConf) => {
+      let editor = new EditClass(eConf.where, eConf.name, this.editor)
+      editor.removeClass()
       if (!isActive) {
-        lines.forEach((i) => {
-          this.editor.addLineClass(i - 1, 'background', 'active-line')
-        })
+        let type = typeof lines
+        if (type === 'object') {
+          lines.forEach(i => {
+            editor.addClass(i)
+          })
+        }
+        if (type === 'number') {
+          editor.addClass(lines)
+        }
       }
-    })
-  },
-  mounted () {
-    let lineNumber = document.querySelectorAll('.CodeMirror-linenumber')
-    lineNumber.forEach(ele => {
-      ele.setAttribute('id', '_' + ele.innerText)
     })
   },
   methods: {
@@ -93,5 +103,8 @@ export default {
 }
 .active-line {
   background-color: #b9cee3;
+}
+.selected {
+  background-color: red;
 }
 </style>

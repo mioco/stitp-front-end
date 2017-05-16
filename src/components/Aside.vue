@@ -23,7 +23,7 @@
 <script>
 import Search from './Search'
 import MenuBtn from './MenuBtn'
-import Bus from '../bus.js'
+import { Bus } from '../bus.js'
 
 export default {
   name: 'aside',

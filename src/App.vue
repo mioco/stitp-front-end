@@ -20,7 +20,7 @@ import GraphBox from './components/GraphBox'
 import Aside from './components/Aside'
 import Modal from './components/Modal'
 import Target from './components/Target'
-import Bus from './bus'
+import { Bus } from './bus'
 
 // 保存在本地，界面刷新时加载
 const STORAGE_KEY = 'stitp-1.0.0'
@@ -85,7 +85,7 @@ export default {
     })
     Bus.$on('fetch-btns', (data) => {
       if (typeof data === 'object') {
-        let btns = getData('/api/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
+        let btns = getData('/api/phpapi/slice', Object.assign({}, {code: Bus.storage.fetch('codeSource')}, data), this)
         btns.then(btns => {
           Bus.storage.save('codeFileName', btns['__hash__'])
           delete btns['__hash__']
@@ -99,7 +99,7 @@ export default {
         this.graphBoxShow = false
         return false
       } else {
-        let graph = getData('/api/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
+        let graph = getData('/api/phpapi/call_graph', Bus.storage.fetch('codeSource'), this)
         graph.then(graph => {
           Bus.storage.save('graph', graph)
           Bus.$emit('graph-render', graph)
